@@ -5,6 +5,7 @@ var users = require('./src/router/users');
 var teams = require('./src/router/teams');
 var matches = require('./src/router/matches');
 var db = require('./src/db');
+var auth = require('./src/auth');
 var compression = require('compression');
 app.use(compression());
 
@@ -14,9 +15,13 @@ app.get('/', function (req, res) {
   res.send(pkg.name + ' ' + pkg.version);
 });
 
-app.use('/v1/users', users);
-app.use('/v1/teams', teams);
-app.use('/v1/matches', matches);
+var passport = require('passport');
+app.use(passport.initialize());
+
+app.use('/auth', auth);
+app.use('/users', users);
+app.use('/teams', teams);
+app.use('/matches', matches);
 
 
 // handling 404 errors

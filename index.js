@@ -5,58 +5,48 @@ var users = require('./src/router/users');
 var teams = require('./src/router/teams');
 var matches = require('./src/router/matches');
 var db = require('./src/db');
-var auth = require('./src/auth');
+var auth = require('./src/router/auth');
+var jwt2user = require('./src/middleware').jwt2user;
+var config = require('./config');
+
+// gzip
 var compression = require('compression');
 app.use(compression());
 
-app.set('port', process.env.PORT || 3000);
-
+// endpoints
 app.get('/', function (req, res) {
   res.send(pkg.name + ' ' + pkg.version);
 });
 
-var passport = require('passport');
-app.use(passport.initialize());
-
-app.use('/auth', auth);
-app.use('/users', users);
-app.use('/teams', teams);
-app.use('/matches', matches);
-
-
-// handling 404 errors
-app.use(function(err, req, res, next) {
-  if (err.status !== 404) {
-    return next();
-  }
- 
-  res.send(err.message || '** no unicorns here **');
+app.get('/current', jwt2user, function (req, res) {
+  // console.log("Logged in with", req.user);
+  res.json(req.user);
 });
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
+// routers
+app.use('/auth', auth);
+app.use('/users', jwt2user, users);
+app.use('/teams', jwt2user, teams);
+app.use('/matches', jwt2user, matches);
 
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: err
-    });
+// handling 404
+app.use(function(req, res, next) {
+  res.status(404).send('Invalid endpoint');
+});
+
+// handle 500 errors
+app.use(function(err, req, res, next) {
+  console.error(err.stack, err.status, err.message);
+
+  res.status(500).send({
+      message: err.message,
+      error: err
   });
+  // res.status(500).send('Something broke');
+});
 
-} else {
-  // production error handler
-  // no stacktraces leaked to user
-  app.use(function(err, req, res, next) {
-      res.status(err.status || 500);
-      res.render('error', {
-          message: err.message,
-          error: {}
-      });
-  });
-}
-
+// start server
+app.set('port', process.env.PORT || config.defaultPort);
 app.listen(app.get('port'), function () {
   console.log(pkg.name, pkg.version);
   console.log('Listening on port', app.get('port'))

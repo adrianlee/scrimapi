@@ -9,7 +9,9 @@ var config = {
 	steamApiKey: "20087C97D27C353C48D3EB5CBF8F7B19",
 
 	// steam auth redirect link
-	steamRedirect: "http://www.csgoscrim.com"
+	steamRedirect: "http://www.csgoscrim.com",
+
+	jwt2userEnabled: false
 };
 
 module.exports = config;

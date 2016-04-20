@@ -8,10 +8,17 @@ var db = require('./src/db');
 var auth = require('./src/router/auth');
 var jwt2user = require('./src/middleware').jwt2user;
 var config = require('./config');
+var bodyParser = require('body-parser');
 
 // gzip
 var compression = require('compression');
 app.use(compression());
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 // endpoints
 app.get('/', function (req, res) {

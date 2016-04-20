@@ -6,13 +6,6 @@ var knex = require('knex')({
 });
 var bookshelf = require('bookshelf')(knex);
 
-// var User = bookshelf.Model.extend({
-//   tableName: 'users',
-//   posts: function() {
-//     return this.hasMany(Posts);
-//   }
-// });
-
 // var Posts = bookshelf.Model.extend({
 //   tableName: 'messages',
 //   tags: function() {
@@ -29,3 +22,14 @@ var bookshelf = require('bookshelf')(knex);
 // }).catch(function(err) {
 //   console.error(err);
 // });
+
+var db = {};
+
+db.User = bookshelf.Model.extend({
+  tableName: 'users',
+  posts: function() {
+    return this.hasMany(Posts);
+  }
+});
+
+module.exports = db;

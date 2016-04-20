@@ -4,6 +4,9 @@ var config = require('../config');
 var middleware = {};
 
 middleware.jwt2user = function (req, res, next) {
+  if (config.jwt2userEnabled === false)
+    return next();
+
   var token = req.query.token || req.headers['x-access-token'];
 
   if (!token)

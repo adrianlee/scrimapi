@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "body-parser": "^1.15.0",
     "bookshelf": "^0.9.4",
     "compression": "^1.6.1",
+    "eslint-config-airbnb": "^7.0.0",
     "express": "^4.13.4",
     "jsonwebtoken": "^5.7.0",
     "knex": "^0.10.0",
@@ -21,7 +23,8 @@
     "eslint-config-airbnb": "^7.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "link": "eslint index"
   },
   "author": "adrianlee"
 }

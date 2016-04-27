@@ -6,30 +6,21 @@ var knex = require('knex')({
 });
 var bookshelf = require('bookshelf')(knex);
 
-// var Posts = bookshelf.Model.extend({
-//   tableName: 'messages',
-//   tags: function() {
-//     return this.belongsToMany(Tag);
-//   }
-// });
-
-// var Tag = bookshelf.Model.extend({
-//   tableName: 'tags'
-// })
-
-// User.where('id', 1).fetch({withRelated: ['posts.tags']}).then(function(user) {
-//   console.log(user.related('posts').toJSON());
-// }).catch(function(err) {
-//   console.error(err);
-// });
 
 var db = {};
 
 db.User = bookshelf.Model.extend({
   tableName: 'users',
-  posts: function() {
-    return this.hasMany(Posts);
+  teams: function() {
+    return this.hasMany(db.Team);
   }
 });
+
+db.Team = bookshelf.Model.extend({
+  tableName: 'teams',
+  owner: function() {
+    return this.belongsTo(db.User);
+  }
+})
 
 module.exports = db;

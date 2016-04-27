@@ -15,10 +15,10 @@ var compression = require('compression');
 app.use(compression());
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 // endpoints
 app.get('/', function (req, res) {
@@ -56,5 +56,5 @@ app.use(function(err, req, res, next) {
 app.set('port', process.env.PORT || config.defaultPort);
 app.listen(app.get('port'), function () {
   console.log(pkg.name, pkg.version);
-  console.log('Listening on port', app.get('port'))
+  console.log('Listening on port', app.get('port'));
 });
